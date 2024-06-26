@@ -6,12 +6,12 @@ import { useAuthValue } from "../context/AuthContext";
 import styles from "./Navbar.module.css";
 
 const Navbar = () => {
-  const { user } = useAuthValue;
-  const { logout } = useAuthentication;
+  const { user } = useAuthValue();
+  const { logout } = useAuthentication();
 
   return (
     <nav className={styles.navbar}>
-      <NavLink to="" className={styles.brand}>
+      <NavLink className={styles.brand}>
         Mini <span>Blog</span>
       </NavLink>
       <ul className={styles.links_list}>
@@ -33,6 +33,10 @@ const Navbar = () => {
                 Entrar
               </NavLink>
             </li>
+          </>
+        )}
+        {!user && (
+          <>
             <li>
               <NavLink
                 to="/register"
@@ -54,15 +58,17 @@ const Navbar = () => {
                 Novo post
               </NavLink>
             </li>
-            <li>
-              <NavLink
-                to="/dashboard"
-                className={({ isActive }) => (isActive ? styles.active : "")}
-              >
-                Dashboard
-              </NavLink>
-            </li>
           </>
+        )}
+        {user && (
+          <li>
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) => (isActive ? styles.active : "")}
+            >
+              Dashboard
+            </NavLink>
+          </li>
         )}
         <li>
           <NavLink

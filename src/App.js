@@ -48,11 +48,11 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route
                 path="/login"
-                element={user ? <Login /> : <Navigate to="/" />}
+                element={!user ? <Login /> : <Navigate to="/" />}
               />
               <Route
                 path="/register"
-                element={user ? <Register /> : <Navigate to="/" />}
+                element={!user ? <Register /> : <Navigate to="/" />}
               />
               <Route
                 path="/dashboard"
