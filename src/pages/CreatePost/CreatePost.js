@@ -16,7 +16,7 @@ const CreatePost = () => {
   };
 
   return (
-    <div>
+    <div className={styles.create_post}>
       <h2>Criar Post</h2>
       <p>Escreva sobre o que quiser e compartilhe o seu conhecimento</p>
       <form onSubmit={handleSubmit}>
@@ -31,6 +31,44 @@ const CreatePost = () => {
             value={title}
           />
         </label>
+        <label>
+          <span>URL da imagem</span>
+          <input
+            type="text"
+            name="image"
+            required
+            placeholder="Insira a imagem que representa o seu Post"
+            onChange={(e) => setTile(e.target.value)}
+            value={image}
+          />
+        </label>
+        <label>
+          <span>Conteúdo:</span>
+          <textarea
+            name="body"
+            required
+            placeholder="Insira o conteúdo do Post"
+            onChange={(e) => setBody(e.target.value)}
+            value={body}
+          ></textarea>
+        </label>
+        <label>
+          <span>Tags</span>
+          <input
+            type="text"
+            name="tags"
+            required
+            placeholder="Insira as tags separadas por vírgula"
+            onChange={(e) => setTile(e.target.value)}
+            value={tags}
+          />
+        </label>
+        <button>Postar</button>
+        {/*       {!loading && <button>Postar</button> }
+        {loading && (
+          <button disabled>Aguarde...</button>
+        )}
+        {error && <p className="error">{error}</p>} */}
       </form>
     </div>
   );

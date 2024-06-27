@@ -59,7 +59,7 @@ function App() {
                 element={user ? <Dashboard /> : <Navigate to="/login" />}
               />
               <Route
-                path="/posts/create"
+                path="/post/create"
                 element={user ? <CreatePost /> : <Navigate to="/login" />}
               />
             </Routes>
