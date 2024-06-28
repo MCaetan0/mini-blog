@@ -14,27 +14,41 @@ const CreatePost = () => {
 
   const { user } = useAuthValue();
   const { insertDocument, response } = useInsertDocument("post");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormError("");
 
     //valida image url
+    try {
+      new URL(image);
+    } catch (error) {
+      setFormError("A imagrm precisa ser uma URL.");
+    }
 
     //array de tags
 
+    const tagsArray = tags.split(",").map((tag) => tag.trim().toLowerCase());
+
     //checar valores4
+    if (!title || !image || !tags || !body) {
+      setFormError("Por favor, preencha todos os campos!");
+    }
+
+    if (formError) return;
 
     insertDocument({
       title,
       image,
       body,
-      tags,
+      tagsArray,
       uid: user.uid,
       createdBt: user.displayName,
     });
 
     //redirect home
+    navigate("/");
   };
 
   return (
@@ -97,6 +111,7 @@ const CreatePost = () => {
           </button>
         )}
         {response.error && <p className="error">{response.error}</p>}
+        {formError && <p className="error">{formError}</p>}
       </form>
     </div>
   );
