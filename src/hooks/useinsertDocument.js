@@ -11,11 +11,22 @@ const initialState = {
   error: null,
 };
 
-const insertReducer = (state, action) => {};
+const insertReducer = (state, action) => {
+  switch (action.type) {
+    case "LOADING":
+      return { loading: true, error: null };
+    case "INSERT_DOC":
+      return { loading: false, error: null };
+    case "ERROR":
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
 
 //docColewction quando insere algo mno sistema precisa informar a coleção
 
-export const useinsertDocument = (docCollection) => {
+export const useInsertDocument = (docCollection) => {
   const [response, dispatch] = useReducer(insertReducer, initialState);
   //dealwith memory leak
   const [cancelled, setCancelled] = useState(false);
@@ -26,4 +37,34 @@ export const useinsertDocument = (docCollection) => {
       dispatch(action);
     }
   };
+
+  const insertDocument = async (document) => {
+    checkCalcelBeforeDispatch({
+      type: "LOADING",
+    });
+
+    try {
+      const newDocument = { ...document, createAt: Timestamp.now };
+      const insertDocument = await addDoc(
+        collection(db, docCollection),
+        newDocument
+      );
+
+      checkCalcelBeforeDispatch({
+        type: "INSERTED_DOC",
+        payload: insertDocument,
+      });
+    } catch (error) {
+      checkCalcelBeforeDispatch({
+        type: "ERROR",
+        payload: error.message,
+      });
+    }
+  };
+
+  useEffect(() => {
+    return () => setCancelled(true);
+  }, []);
+
+  return { insertDocument, response };
 };
