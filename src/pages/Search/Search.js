@@ -1,4 +1,4 @@
-import styles from "Search.module.css";
+import styles from "./Search.module.css";
 
 import { useFetchDocuments } from "../../hooks/useFetchDocument";
 import { useQuery } from "../../hooks/useQuery";
