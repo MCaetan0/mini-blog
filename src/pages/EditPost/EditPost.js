@@ -25,7 +25,9 @@ const EditPost = () => {
       setImage(post.image);
       setBody(post.body);
 
-      setTags(post.tags);
+      const textTags = post.tags.join(", ");
+
+      setTags(textTags);
     }
   }, [post]);
 
@@ -47,22 +49,22 @@ const EditPost = () => {
     }
 
     // create tags array
-    // const tagsArray = tags.split(",").map((tag) => tag.trim());
+    const tagsArray = tags.split(",").map((tag) => tag.trim());
 
-    console.log(tags);
+    console.log(tagsArray);
 
     console.log({
       title,
       image,
       body,
-      tags,
+      tags: tagsArray,
     });
 
     const data = {
       title,
       image,
       body,
-      tags,
+      tags: tagsArray,
     };
 
     console.log(post);

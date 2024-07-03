@@ -58,7 +58,7 @@ function App() {
                 path="/posts/edit/:id"
                 element={user ? <EditPost /> : <Navigate to="/login" />}
               />
-              <Route path="/dashboard/posts/:id" element={<Post />} />
+              <Route path="/posts/:id" element={<Post />} />
               <Route path="/search" element={<Search />} />
               <Route
                 path="/login"
