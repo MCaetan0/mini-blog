@@ -16,14 +16,14 @@
 }
 
 .tags p {
-  margin-right: 5em;
+  margin-right: 0.5em;
 }
 
 .tags span {
   font-weight: bold;
 }
 
-.createby {
+.createdby {
   font-style: italic;
   color: #444;
   font-size: 0.8em;

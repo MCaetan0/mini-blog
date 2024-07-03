@@ -13,7 +13,6 @@ import PostDetail from "../../components/PostDetail";
 
 const Home = () => {
   const { documents: posts, loading } = useFetchDocuments("posts");
-  console.log(posts);
 
   const navigate = useNavigate();
 
@@ -42,7 +41,7 @@ const Home = () => {
       </form>
       <div className="post-list">
         {loading && <p>Carregando...</p>}
-        {posts && posts?.length === 0 && (
+        {posts && posts.length === 0 && (
           <div className={styles.noposts}>
             <p>Não foram encontrados posts</p>
             <Link to="/posts/create" className="btn">
@@ -50,8 +49,7 @@ const Home = () => {
             </Link>
           </div>
         )}
-        {posts &&
-          posts?.map((post) => <PostDetail key={post.id} post={post} />)}
+        {posts && posts.map((post) => <PostDetail key={post.id} post={post} />)}
       </div>
     </div>
   );

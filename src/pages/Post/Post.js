@@ -13,7 +13,6 @@ const Post = () => {
     <div className={styles.post_container}>
       {post && (
         <>
-          alert("alsalsal")
           <h1>{post.title}</h1>
           <img src={post.image} alt={post.title} />
           <p>{post.body}</p>
