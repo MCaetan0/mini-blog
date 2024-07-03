@@ -2,10 +2,6 @@ import { useState, useEffect, useReducer } from "react";
 import { db } from "../firebase/config";
 import { updateDoc, doc } from "firebase/firestore";
 
-//collection onde salva os dados, os posts etc -
-//addDoc faz insert
-//timestamp marca hora da criacao
-
 const initialState = {
   loading: null,
   error: null,
@@ -24,39 +20,37 @@ const updateReducer = (state, action) => {
   }
 };
 
-//docColewction quando insere algo mno sistema precisa informar a coleção
-
 export const useUpdateDocument = (docCollection) => {
   const [response, dispatch] = useReducer(updateReducer, initialState);
-  //dealwith memory leak
+
+  // deal with memory leak
   const [cancelled, setCancelled] = useState(false);
 
-  //antes de qualquer ação ve se está cancelado
-  const checkCalcelBeforeDispatch = (action) => {
+  const checkCancelBeforeDispatch = (action) => {
     if (!cancelled) {
       dispatch(action);
     }
   };
 
-  const updateDocument = async (id, data) => {
-    checkCalcelBeforeDispatch({
-      type: "LOADING",
-    });
+  const updateDocument = async (uid, data) => {
+    checkCancelBeforeDispatch({ type: "LOADING" });
 
     try {
-      const docRef = await doc(updateDoc, data);
+      const docRef = await doc(db, docCollection, uid);
+
+      console.log(docRef);
 
       const updatedDocument = await updateDoc(docRef, data);
 
-      checkCalcelBeforeDispatch({
+      console.log(updateDocument);
+
+      checkCancelBeforeDispatch({
         type: "UPDATED_DOC",
         payload: updatedDocument,
       });
     } catch (error) {
-      checkCalcelBeforeDispatch({
-        type: "ERROR",
-        payload: error.message,
-      });
+      console.log(error);
+      checkCancelBeforeDispatch({ type: "ERROR", payload: error.message });
     }
   };
 

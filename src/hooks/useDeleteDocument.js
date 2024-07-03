@@ -2,10 +2,6 @@ import { useState, useEffect, useReducer } from "react";
 import { db } from "../firebase/config";
 import { doc, deleteDoc } from "firebase/firestore";
 
-//collection onde salva os dados, os posts etc -
-//addDoc faz insert
-//timestamp marca hora da criacao
-
 const initialState = {
   loading: null,
   error: null,
@@ -24,37 +20,30 @@ const deleteReducer = (state, action) => {
   }
 };
 
-//docColewction quando insere algo mno sistema precisa informar a coleção
-
 export const useDeleteDocument = (docCollection) => {
   const [response, dispatch] = useReducer(deleteReducer, initialState);
-  //dealwith memory leak
+
+  // deal with memory leak
   const [cancelled, setCancelled] = useState(false);
 
-  //antes de qualquer ação ve se está cancelado
-  const checkCalcelBeforeDispatch = (action) => {
+  const checkCancelBeforeDispatch = (action) => {
     if (!cancelled) {
       dispatch(action);
     }
   };
 
   const deleteDocument = async (id) => {
-    checkCalcelBeforeDispatch({
-      type: "LOADING",
-    });
+    checkCancelBeforeDispatch({ type: "LOADING" });
 
     try {
-      const deletedDocument = await deleteDoc(db, doc(docCollection, id));
+      const deletedDocument = await deleteDoc(doc(db, docCollection, id));
 
-      checkCalcelBeforeDispatch({
+      checkCancelBeforeDispatch({
         type: "DELETED_DOC",
         payload: deletedDocument,
       });
     } catch (error) {
-      checkCalcelBeforeDispatch({
-        type: "ERROR",
-        payload: error.message,
-      });
+      checkCancelBeforeDispatch({ type: "ERROR", payload: error.message });
     }
   };
 

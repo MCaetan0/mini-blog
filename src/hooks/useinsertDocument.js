@@ -15,9 +15,12 @@ const insertReducer = (state, action) => {
   switch (action.type) {
     case "LOADING":
       return { loading: true, error: null };
+      console.log("carrega");
     case "INSERT_DOC":
       return { loading: false, error: null };
+      console.log("PQ NAO VASI PORAAA");
     case "ERROR":
+      console.log("eeror");
       return { loading: false, error: action.payload };
     default:
       return state;
@@ -44,7 +47,8 @@ export const useInsertDocument = (docCollection) => {
     });
 
     try {
-      const newDocument = { ...document, createAt: Timestamp.now };
+      const newDocument = { ...document, created_at: new Date() };
+
       const insertDocument = await addDoc(
         collection(db, docCollection),
         newDocument
@@ -55,6 +59,7 @@ export const useInsertDocument = (docCollection) => {
         payload: insertDocument,
       });
     } catch (error) {
+      console.log(error);
       checkCalcelBeforeDispatch({
         type: "ERROR",
         payload: error.message,

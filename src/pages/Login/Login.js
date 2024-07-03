@@ -1,8 +1,7 @@
 import styles from "./Login.module.css";
 
+import { useEffect, useState } from "react";
 import { useAuthentication } from "../../hooks/useAuthentication";
-
-import { useState, useEffect } from "react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -15,6 +14,7 @@ const Login = () => {
     e.preventDefault();
 
     setError("");
+
     const user = {
       email,
       password,
@@ -22,10 +22,11 @@ const Login = () => {
 
     const res = await login(user);
 
-    console.log(user);
+    console.log(res);
   };
 
   useEffect(() => {
+    console.log(authError);
     if (authError) {
       setError(authError);
     }
@@ -42,9 +43,9 @@ const Login = () => {
             type="email"
             name="email"
             required
-            placheholder="E-mail do Usuário"
-            value={email}
+            placeholder="E-mail do usuário"
             onChange={(e) => setEmail(e.target.value)}
+            value={email}
           />
         </label>
         <label>
@@ -53,19 +54,17 @@ const Login = () => {
             type="password"
             name="password"
             required
-            placheholder="Insira sua senha"
-            value={password}
+            placeholder="Insira a senha"
             onChange={(e) => setPassword(e.target.value)}
+            value={password}
           />
         </label>
-
-        {!loading && <button className="btn">ENTRAR</button>}
+        {!loading && <button className="btn">Entrar</button>}
         {loading && (
           <button className="btn" disabled>
             Aguarde...
           </button>
         )}
-
         {error && <p className="error">{error}</p>}
       </form>
     </div>
