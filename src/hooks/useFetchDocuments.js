@@ -6,8 +6,6 @@ import {
   orderBy,
   onSnapshot,
   where,
-  QuerySnapshot,
-  doc,
 } from "firebase/firestore";
 
 export const useFetchDocuments = (docCollection, search = null, uid = null) => {
@@ -15,12 +13,14 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(null);
 
-  //dealwith memory leak
+  // deal with memory leak
   const [cancelled, setCancelled] = useState(false);
 
   useEffect(() => {
     async function loadData() {
-      if (cancelled) return;
+      if (cancelled) {
+        return;
+      }
 
       setLoading(true);
 
@@ -29,41 +29,42 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) => {
       try {
         let q;
 
-        //busca
-        //dashboard
-
         if (search) {
           q = await query(
             collectionRef,
-            where("tagsArray", "array-contains", search),
-            orderBy("createdAt", "desc")
+            where("tags", "array-contains", search),
+            orderBy("created_at", "desc")
           );
         } else if (uid) {
           q = await query(
             collectionRef,
             where("uid", "==", uid),
-            orderBy("createdAt", "desc")
+            orderBy("created_at", "desc")
           );
         } else {
-          q = await query(collectionRef, orderBy("createdAt", "desc"));
+          q = await query(collectionRef, orderBy("created_at", "desc"));
         }
-        await onSnapshot(q, (QuerySnapshot) => {
+
+        await onSnapshot(q, (querySnapshot) => {
           setDocuments(
-            QuerySnapshot.docs.map((doc) => ({
+            querySnapshot.docs.map((doc) => ({
               id: doc.id,
               ...doc.data(),
             }))
           );
         });
-        setLoading(false);
       } catch (error) {
         console.log(error);
         setError(error.message);
-        setLoading(false);
       }
+
+      setLoading(false);
     }
+
     loadData();
   }, [docCollection, search, uid, cancelled]);
+
+  console.log(documents);
 
   useEffect(() => {
     return () => setCancelled(true);

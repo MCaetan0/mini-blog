@@ -1,5 +1,3 @@
-import { db, app } from "../firebase/config";
-
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -19,7 +17,7 @@ export const useAuthentication = () => {
 
   const [cancelled, setCancelled] = useState(false);
 
-  const auth = getAuth(app);
+  const auth = getAuth();
 
   function checkIfIsCancelled() {
     if (cancelled) {
@@ -31,7 +29,6 @@ export const useAuthentication = () => {
   const createUser = async (data) => {
     checkIfIsCancelled();
 
-    setError(null);
     setLoading(true);
 
     try {
@@ -44,8 +41,6 @@ export const useAuthentication = () => {
       await updateProfile(user, {
         displayName: data.displayName,
       });
-
-      setLoading(false);
 
       return user;
     } catch (error) {
@@ -61,9 +56,9 @@ export const useAuthentication = () => {
       } else {
         systemErrorMessage = "Ocorreu um erro, por favor tente mais tarde.";
       }
-      setLoading(false);
       setError(systemErrorMessage);
     }
+    setLoading(false);
   };
 
   //logoutconst
@@ -82,8 +77,11 @@ export const useAuthentication = () => {
 
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password);
-      setLoading(false);
     } catch (error) {
+      console.log(error.message);
+      console.log(typeof error.message);
+      console.log(error.message.includes("user-not"));
+
       let systemErrorMessage;
 
       if (error.message.includes("user-not-found")) {
@@ -95,8 +93,8 @@ export const useAuthentication = () => {
       }
 
       setError(systemErrorMessage);
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -107,8 +105,8 @@ export const useAuthentication = () => {
     auth,
     createUser,
     error,
-    loading,
     logout,
     login,
+    loading,
   };
 };
