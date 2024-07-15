@@ -12,20 +12,20 @@ export const useFetchDocument = (docCollection, id) => {
       setLoading(true);
 
       try {
-        const docRef = await doc(db, docCollection, id);
-        const docSnap = await getDoc(docRef);
+        const docRef = await doc(db, docCollection, id); // Cria uma referência ao documento no Firestore.
+        const docSnap = await getDoc(docRef); // Busca o documento usando a referência.
 
-        setDocument(docSnap.data());
+        setDocument(docSnap.data()); // Armazena os dados do documento no estado `document`.
       } catch (error) {
         console.log(error);
         setError(error.message);
       }
 
-      setLoading(false);
+      setLoading(false); // Indica que a busca do documento foi concluída.
     };
 
     loadDocument();
-  }, [docCollection, id]);
+  }, [docCollection, id]); // Executa o efeito sempre que `docCollection` ou `id` mudarem.
 
   console.log(document);
 

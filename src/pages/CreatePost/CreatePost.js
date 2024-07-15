@@ -12,15 +12,16 @@ const CreatePost = () => {
   const [tags, setTags] = useState("");
   const [formError, setFormError] = useState("");
 
+  // desestrutura user do contexto de autenticação, contém informações como uid e displayName.
   const { user } = useAuthValue();
 
   const navigate = useNavigate();
 
-  const { insertDocument, response } = useInsertDocument("posts");
+  const { insertDocument, response } = useInsertDocument("posts"); //insere na coleção posts do firestore
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormError("");
+    setFormError(""); //para garantir que erro anterior seja removio[do]
 
     // validate image
     try {
@@ -37,8 +38,6 @@ const CreatePost = () => {
         setFormError("Por favor, preencha todos os campos!");
       }
 
-      console.log(tagsArray);
-
       console.log({
         title,
         image,
@@ -50,6 +49,7 @@ const CreatePost = () => {
 
       if (formError) return;
 
+      //passa parametros para o hook de inserir
       insertDocument({
         title,
         image,
@@ -59,7 +59,7 @@ const CreatePost = () => {
         createdBy: user.displayName,
       });
 
-      // redirect to home page
+      // redirect para home
       navigate("/");
     } catch (error) {
       console.log(error);

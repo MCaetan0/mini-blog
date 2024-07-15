@@ -12,11 +12,10 @@ export const useAuthentication = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(null);
 
-  //cleanup
-  //deal with memory leak
-
+  //lidando com vazamento de memória
   const [cancelled, setCancelled] = useState(false);
 
+  // Inicializa serviço de autenticação do Firebase.
   const auth = getAuth();
 
   function checkIfIsCancelled() {
@@ -25,7 +24,6 @@ export const useAuthentication = () => {
     }
   }
 
-  //register
   const createUser = async (data) => {
     checkIfIsCancelled();
 
@@ -97,6 +95,7 @@ export const useAuthentication = () => {
     setLoading(false);
   };
 
+  //fução de limpeza quando o componente é desmontado
   useEffect(() => {
     return () => setCancelled(true);
   });

@@ -6,7 +6,9 @@ import { useAuthValue } from "../context/AuthContext";
 import styles from "./Navbar.module.css";
 
 const Navbar = () => {
+  // Obtendo o usuário autenticado do contexto de autenticação
   const { user } = useAuthValue();
+  // Obtendo a função de logout do hook de autenticação
   const { logout } = useAuthentication();
 
   return (

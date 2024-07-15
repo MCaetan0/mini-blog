@@ -7,10 +7,9 @@ import { useFetchDocument } from "../../hooks/useFetchDocument";
 import { useUpdateDocument } from "../../hooks/useUpdateDocument";
 
 const EditPost = () => {
+  //obtém o id a ser editado pela url
   const { id } = useParams();
   const { document: post } = useFetchDocument("posts", id);
-
-  console.log(post);
 
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
@@ -18,7 +17,7 @@ const EditPost = () => {
   const [tags, setTags] = useState([]);
   const [formError, setFormError] = useState("");
 
-  // fill form data
+  // atualiza sempre que mudar o post
   useEffect(() => {
     if (post) {
       setTitle(post.title);
@@ -50,8 +49,6 @@ const EditPost = () => {
 
     // create tags array
     const tagsArray = tags.split(",").map((tag) => tag.trim());
-
-    console.log(tagsArray);
 
     console.log({
       title,
