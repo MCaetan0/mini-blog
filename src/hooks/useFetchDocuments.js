@@ -23,7 +23,7 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) => {
       }
 
       setLoading(true);
-
+      // Cria uma referência à coleção no Firestore.
       const collectionRef = await collection(db, docCollection);
 
       try {
@@ -31,17 +31,20 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) => {
 
         if (search) {
           q = await query(
+            //busca por tags e ordena ordem decrescente
             collectionRef,
             where("tags", "array-contains", search),
             orderBy("created_at", "desc")
           );
         } else if (uid) {
+          //busca por usuario e ordena ordem decrescente
           q = await query(
             collectionRef,
             where("uid", "==", uid),
             orderBy("created_at", "desc")
           );
         } else {
+          //se nao busca todos os documentos
           q = await query(collectionRef, orderBy("created_at", "desc"));
         }
 

@@ -6,7 +6,7 @@ const initialState = {
   loading: null,
   error: null,
 };
-
+//define como o estado será atualizado com base em ações
 const updateReducer = (state, action) => {
   switch (action.type) {
     case "LOADING":
@@ -44,6 +44,7 @@ export const useUpdateDocument = (docCollection) => {
 
       console.log(updateDocument);
 
+      //operação certa despacha updated doc
       checkCancelBeforeDispatch({
         type: "UPDATED_DOC",
         payload: updatedDocument,
@@ -60,3 +61,4 @@ export const useUpdateDocument = (docCollection) => {
 
   return { updateDocument, response };
 };
+//response = o estado atualizado após as operações de atualização (loading e error).

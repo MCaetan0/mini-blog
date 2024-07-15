@@ -15,10 +15,10 @@ const insertReducer = (state, action) => {
   switch (action.type) {
     case "LOADING":
       return { loading: true, error: null };
-      console.log("carrega");
+
     case "INSERT_DOC":
       return { loading: false, error: null };
-      console.log("PQ NAO VASI PORAAA");
+
     case "ERROR":
       console.log("eeror");
       return { loading: false, error: action.payload };
@@ -73,3 +73,12 @@ export const useInsertDocument = (docCollection) => {
 
   return { insertDocument, response };
 };
+
+/* 
+insertDocument é uma função assíncrona que insere um novo documento na coleção especificada no Firestore.
+Antes de iniciar a inserção, dispara a ação LOADING para indicar que a operação está em andamento.
+Cria um novo documento adicionando a data de criação (created_at) como a data atual.
+Utiliza addDoc para adicionar o documento à coleção no Firestore.
+Após a conclusão bem-sucedida, dispara a ação INSERT_DOC para indicar que o documento foi inserido.
+Em caso de erro, captura e loga o erro, e então dispara a ação ERROR com a mensagem de erro.
+ */
